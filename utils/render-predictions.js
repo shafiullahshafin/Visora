@@ -1,9 +1,9 @@
-import {throttle} from "lodash";
-
 let audioInstance = null;
 
 export const renderPredictions = (predictions, ctx) => {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+  let personDetected = false;
 
   // Fonts
   const font = "16px sans-serif";
@@ -34,19 +34,24 @@ export const renderPredictions = (predictions, ctx) => {
     ctx.fillText(prediction.class, x, y);
 
     if (isPerson) {
-      playAudio();
+      personDetected = true;
     }
   });
-};
 
-const playAudio = throttle(() => {
-  if (audioInstance === null) {
-    audioInstance = new Audio("/alert.wav");
+  if (personDetected) {
+    if (audioInstance === null) {
+      audioInstance = new Audio("/alert.wav");
+    }
+    
+    // Play the audio only if it's currently paused
+    if (audioInstance.paused) {
+      audioInstance.play().catch(() => {});
+    }
+  } else {
+    // Stop and rewind the audio immediately if no person is detected
+    if (audioInstance !== null && !audioInstance.paused) {
+      audioInstance.pause();
+      audioInstance.currentTime = 0;
+    }
   }
-
-  audioInstance.pause();
-  audioInstance.currentTime = 0;
-  audioInstance.play().catch(e => {
-    console.error("Audio playback failed. User interaction may be required:", e);
-  });
-}, 13000);
+};

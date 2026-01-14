@@ -1,11 +1,12 @@
+// configures eslint rules and ignore patterns for project
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 
 const eslintConfig = defineConfig([
   ...nextVitals,
-  // Override default ignores of eslint-config-next.
+  // overrides default ignores for next config
   globalIgnores([
-    // Default ignores of eslint-config-next:
+    // ignores generated build artifacts and env files
     ".next/**",
     "out/**",
     "build/**",

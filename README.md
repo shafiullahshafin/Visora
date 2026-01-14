@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Human Detector Application
+
+A small web application that uses your webcam and a COCO-SSD model to detect people in real time, draw bounding boxes around them, and play an audio alert with adjustable volume.
+
+## Features
+
+- Detects people in the webcam feed using TensorFlow.js COCO-SSD  
+- Draws bounding boxes and labels over detected people  
+- Plays an alert sound when a person appears in frame  
+- Provides a volume control slider for the alert sound  
+- Runs fully in the browser using the Next.js App Router  
+
+## Tech Stack
+
+- Next.js 16 (App Router)  
+- React 19  
+- TensorFlow.js and `@tensorflow-models/coco-ssd`  
+- `react-webcam` for camera access  
+- Tailwind CSS v4 (via `app/globals.css`)  
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js and npm installed  
+- A modern browser that supports `getUserMedia` and WebGL  
+- A webcam connected and allowed in the browser  
+
+### Installation
+
+```bash
+npm install
+```
+
+### Run the Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open http://localhost:3000 in your browser.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Allow camera access when the browser asks  
+- Wait for the model to load and the loading message to disappear  
+- Move into the camera frame so the app can detect a person  
+- Adjust the alert volume slider until the sound feels comfortable  
 
-## Learn More
+## Available Scripts
 
-To learn more about Next.js, take a look at the following resources:
+In the project directory, you can run:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `npm run dev` – starts the development server  
+- `npm run build` – builds the production bundle  
+- `npm run start` – runs the production server after a build  
+- `npm run lint` – runs ESLint on the project files  
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
+- `app/` – Next.js App Router entry, global layout, and main page  
+- `components/` – React components, including the `ObjectDetection` webcam view  
+- `utils/` – helper modules such as prediction rendering and alert handling  
+- `public/` – static assets such as `alert.wav` and icons  
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- The alert volume slider only affects the detection alert sound  
+- Detection threshold and interval are configured in the `ObjectDetection` component and can be tuned in code if needed  

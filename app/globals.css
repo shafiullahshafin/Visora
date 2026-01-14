@@ -34,3 +34,14 @@ body {
   background-clip: text;
   color: transparent;
 }
+
+.gradient-text {
+  background: linear-gradient(to right, #e5e7eb, #9ca3af, #4b5563);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.gradient {
+  background: radial-gradient(circle at top, rgba(255, 255, 255, 0.15), transparent 60%);
+}

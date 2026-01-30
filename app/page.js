@@ -5,8 +5,8 @@ import { ShieldCheck } from "lucide-react";
 // shows title and object detection component
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-start pt-4 min-h-[calc(100vh-8rem)] px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-5xl mt-4 mx-auto">
+    <div className="flex-1 flex flex-col items-center justify-center p-4 overflow-hidden">
+      <div className="w-full h-full flex items-center justify-center relative">
         <ObjectDetection />
       </div>
     </div>

@@ -27,11 +27,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen flex flex-col overflow-hidden`}
         suppressHydrationWarning
       >
         <Navbar />
-        <main className="flex-1 pt-16">
+        <main className="flex-1 flex flex-col pt-16 relative overflow-hidden">
           {children}
         </main>
         <Footer />

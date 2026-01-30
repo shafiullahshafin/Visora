@@ -99,7 +99,7 @@ const ObjectDetection = () => {
 
   // renders webcam view and detection canvas
   return (
-    <div className="w-full flex flex-col items-center justify-center min-h-[calc(100vh-10rem)]">
+    <div className="w-full h-full flex flex-col items-center justify-center">
       {isLoading ? (
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-12 w-12 animate-spin text-blue-500" />
@@ -114,7 +114,7 @@ const ObjectDetection = () => {
           <span>Start Detection</span>
         </button>
       ) : (
-        <div className="relative flex justify-center items-center w-full max-w-4xl mx-auto overflow-hidden rounded-2xl border border-white/10 shadow-2xl bg-black/50 backdrop-blur-sm">
+        <div className="relative flex justify-center items-center w-full max-w-4xl max-h-full mx-auto overflow-hidden rounded-2xl border border-white/10 shadow-2xl bg-black/50 backdrop-blur-sm">
           <Webcam
             ref={webcamRef}
             className="w-full h-auto object-cover"

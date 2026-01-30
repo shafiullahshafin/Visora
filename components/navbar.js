@@ -5,7 +5,7 @@ import { ShieldCheck } from "lucide-react";
 const Navbar = () => {
   return (
     <nav className="fixed top-0 w-full z-50 border-b border-white/10 bg-black/50 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+      <div className="flex h-16 w-full items-center justify-between px-6 lg:px-8">
         <Link href="/" className="text-xl font-bold tracking-tight text-white hover:opacity-80 transition-opacity">
           Visora
         </Link>

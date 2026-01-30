@@ -1,8 +1,22 @@
 // keeps single audio instance for alert sound
 let audioInstance = null;
 
+// initializes audio context for mobile browsers
+export const initAudio = () => {
+  if (!audioInstance) {
+    audioInstance = new Audio("/alert.wav");
+  }
+  // plays and pauses immediately to unlock audio on mobile
+  audioInstance.play().then(() => {
+    audioInstance.pause();
+    audioInstance.currentTime = 0;
+  }).catch((error) => {
+    console.log("Audio initialization failed:", error);
+  });
+};
+
 // draws predictions and controls alert sound based on detections
-export const renderPredictions = (predictions, ctx, volume = 1) => {
+export const renderPredictions = (predictions, ctx) => {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
   let personDetected = false;
@@ -47,8 +61,8 @@ export const renderPredictions = (predictions, ctx, volume = 1) => {
       audioInstance = new Audio("/alert.wav");
     }
 
-    const clampedVolume = Math.min(1, Math.max(0, volume));
-    audioInstance.volume = clampedVolume;
+    // sets volume lower than previous default
+    audioInstance.volume = 0.2;
 
     if (audioInstance.paused) {
       audioInstance.play().catch(() => {});

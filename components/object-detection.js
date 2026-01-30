@@ -8,36 +8,25 @@ import { useEffect, useRef, useState } from "react";
 import * as tf from "@tensorflow/tfjs";
 import { load as cocoSSDLoad } from "@tensorflow-models/coco-ssd";
 import "@tensorflow/tfjs-backend-webgl";
-import { renderPredictions } from "@/utils/render-predictions";
+import { renderPredictions, initAudio } from "@/utils/render-predictions";
 
 const ObjectDetection = () => {
   // tracks loading state for model and control alert volume
   const [isLoading, setIsLoading] = useState(true);
-  const [volume, setVolume] = useState(0.4);
+  const [isStarted, setIsStarted] = useState(false);
 
   // holds references for webcam, canvas and timers
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const detectIntervalRef = useRef(null);
-  const volumeRef = useRef(0.4);
+  const netRef = useRef(null);
 
   // loads coco ssd model and starts detection loop
   async function runCoco() {
     setIsLoading(true);
     const net = await cocoSSDLoad();
+    netRef.current = net;
     setIsLoading(false);
-
-    let isDetecting = false;
-
-    detectIntervalRef.current = setInterval(async () => {
-      if (isDetecting) {
-        return;
-      }
-
-      isDetecting = true;
-      await runObjectDetection(net);
-      isDetecting = false;
-    }, 200);
   }
 
   // runs detection on current webcam frame
@@ -57,7 +46,7 @@ const ObjectDetection = () => {
       );
 
       const context = canvasRef.current.getContext("2d");
-      renderPredictions(detectedObjects, context, volumeRef.current);
+      renderPredictions(detectedObjects, context);
     }
   }
 
@@ -79,7 +68,6 @@ const ObjectDetection = () => {
   useEffect(() => {
     tf.ready().then(() => {
       runCoco();
-      showmyVideo();
     });
 
     return () => {
@@ -90,18 +78,37 @@ const ObjectDetection = () => {
     };
   }, []);
 
-  // updates alert volume from slider input
-  const handleVolumeChange = (event) => {
-    const value = Number(event.target.value);
-    setVolume(value);
-    volumeRef.current = value;
+  // starts detection loop and unlocks audio
+  const startDetection = () => {
+    initAudio();
+    setIsStarted(true);
+
+    let isDetecting = false;
+
+    detectIntervalRef.current = setInterval(async () => {
+      if (isDetecting || !netRef.current) {
+        return;
+      }
+
+      isDetecting = true;
+      await runObjectDetection(netRef.current);
+      showmyVideo();
+      isDetecting = false;
+    }, 200);
   };
 
-  // renders webcam view, drawing canvas and volume control
+  // renders webcam view and detection canvas
   return (
     <div className="mt-8 w-full flex flex-col items-center">
       {isLoading ? (
         <div className="gradient-text">Loading AI Model...</div>
+      ) : !isStarted ? (
+        <button
+          onClick={startDetection}
+          className="px-6 py-3 text-lg font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          Start Detection
+        </button>
       ) : (
         <div className="relative flex justify-center items-center gradient p-1.5 rounded-md">
           <Webcam
@@ -111,24 +118,10 @@ const ObjectDetection = () => {
           />
           <canvas
             ref={canvasRef}
-            className="absolute top-0 left-0 z-[99999] w-full lg:h-[720px]"
+            className="absolute top-0 left-0 z-99999 w-full lg:h-[720px]"
           />
         </div>
       )}
-      <div className="mt-4 w-full max-w-md">
-        <label className="block mb-1 text-sm font-medium">
-          Alert volume
-        </label>
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.05"
-          value={volume}
-          onChange={handleVolumeChange}
-          className="w-full"
-        />
-      </div>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 // renders navigation bar with brand and links
 import Link from "next/link";
-import { Github } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 
 const Navbar = () => {
   return (
@@ -10,14 +10,10 @@ const Navbar = () => {
           Visora
         </Link>
         <div className="flex items-center gap-6">
-          <Link
-            href="https://github.com"
-            target="_blank"
-            className="text-gray-300 hover:text-white transition-colors"
-          >
-            <Github className="h-5 w-5" />
-            <span className="sr-only">GitHub</span>
-          </Link>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-sm font-medium text-white/80">
+            <ShieldCheck className="w-4 h-4" />
+            <span>AI Powered Security</span>
+          </div>
         </div>
       </div>
     </nav>

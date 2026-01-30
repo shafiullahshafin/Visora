@@ -62,7 +62,7 @@ export const renderPredictions = (predictions, ctx) => {
     }
 
     // sets volume lower than previous default
-    audioInstance.volume = 0.1;
+    audioInstance.volume = 0.05;
 
     if (audioInstance.paused) {
       audioInstance.play().catch(() => {});

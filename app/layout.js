@@ -1,5 +1,7 @@
 // configures global fonts and styles for app
 import { Geist, Geist_Mono } from "next/font/google";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 import "./globals.css";
 
 // sets primary sans font for ui text
@@ -16,8 +18,8 @@ const geistMono = Geist_Mono({
 
 // defines metadata for human detector app
 export const metadata = {
-  title: "Human Detector Application",
-  description: "Real-time person detection with visual and audio alerts",
+  title: "Visora - Human Detection",
+  description: "Real-time AI person detection with visual and audio alerts",
 };
 
 // renders root layout wrapper for every page
@@ -25,9 +27,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
-        {children}
+        <Navbar />
+        <main className="flex-1 pt-16">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );

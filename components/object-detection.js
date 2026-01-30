@@ -2,16 +2,16 @@
 "use client";
 
 // builds object detection experience with webcam and coco ssd
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
-import { useEffect, useRef, useState } from "react";
 import * as tf from "@tensorflow/tfjs";
 import { load as cocoSSDLoad } from "@tensorflow-models/coco-ssd";
 import "@tensorflow/tfjs-backend-webgl";
 import { renderPredictions, initAudio } from "@/utils/render-predictions";
+import { Loader2, ScanFace } from "lucide-react";
 
 const ObjectDetection = () => {
-  // tracks loading state for model and control alert volume
+  // tracks loading state and detection status
   const [isLoading, setIsLoading] = useState(true);
   const [isStarted, setIsStarted] = useState(false);
 
@@ -99,26 +99,34 @@ const ObjectDetection = () => {
 
   // renders webcam view and detection canvas
   return (
-    <div className="mt-8 w-full flex flex-col items-center">
+    <div className="w-full flex flex-col items-center justify-center min-h-[400px]">
       {isLoading ? (
-        <div className="gradient-text">Loading AI Model...</div>
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="h-12 w-12 animate-spin text-blue-500" />
+          <p className="text-lg font-medium text-gray-400">Loading AI Model...</p>
+        </div>
       ) : !isStarted ? (
         <button
           onClick={startDetection}
-          className="px-6 py-3 text-lg font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
+          className="group relative inline-flex items-center gap-3 px-8 py-4 text-lg font-semibold text-white bg-blue-600 rounded-full hover:bg-blue-700 transition-all hover:scale-105 shadow-lg hover:shadow-blue-500/25"
         >
-          Start Detection
+          <ScanFace className="w-6 h-6" />
+          <span>Start Detection</span>
         </button>
       ) : (
-        <div className="relative flex justify-center items-center gradient p-1.5 rounded-md">
+        <div className="relative flex justify-center items-center w-full max-w-4xl mx-auto overflow-hidden rounded-2xl border border-white/10 shadow-2xl bg-black/50 backdrop-blur-sm">
           <Webcam
             ref={webcamRef}
-            className="rounded-md w-full lg:h-[720px]"
+            className="w-full h-auto object-cover"
             muted
+            playsInline
+            videoConstraints={{
+              facingMode: "user",
+            }}
           />
           <canvas
             ref={canvasRef}
-            className="absolute top-0 left-0 z-99999 w-full lg:h-[720px]"
+            className="absolute top-0 left-0 w-full h-full object-cover"
           />
         </div>
       )}

@@ -1,69 +1,74 @@
-# Human Detector Application
+# Visora
 
-A small web application that uses your webcam and a COCO-SSD model to detect people in real time, draw bounding boxes around them, and play an audio alert with adjustable volume.
+Visora is a real-time AI-powered human detection application built with Next.js and TensorFlow.js. It uses the browser's webcam to detect people in the video feed and provides immediate visual and audio alerts, all running entirely client-side for privacy and speed.
+
+![Visora Preview](./public/preview.png)
 
 ## Features
 
-- Detects people in the webcam feed using TensorFlow.js COCO-SSD  
-- Draws bounding boxes and labels over detected people  
-- Plays an alert sound when a person appears in frame  
-- Provides a volume control slider for the alert sound  
-- Runs fully in the browser using the Next.js App Router  
+- **Real-time Detection**: Uses the COCO-SSD model to detect objects in the video stream with high accuracy.
+- **Human-Specific Alerts**: specifically highlights detected persons with distinct red bounding boxes.
+- **Audio Alarm**: Triggers an audible alert sound immediately when a person is detected in the frame.
+- **Privacy First**: All processing happens locally in your browser; no video data is sent to any server.
+- **Responsive Design**: Fully responsive UI featuring glassmorphism effects, optimized for both desktop and mobile devices.
+- **Mobile Compatibility**: optimized for mobile browsers with specific handling for audio autoplay restrictions.
 
 ## Tech Stack
 
-- Next.js 16 (App Router)  
-- React 19  
-- TensorFlow.js and `@tensorflow-models/coco-ssd`  
-- `react-webcam` for camera access  
-- Tailwind CSS v4 (via `app/globals.css`)  
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
+- **Library**: [React 19](https://react.dev/)
+- **AI/ML**: [TensorFlow.js](https://www.tensorflow.org/js) with [COCO-SSD](https://github.com/tensorflow/tfjs-models/tree/master/coco-ssd)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
 
 ## Getting Started
 
+Follow these steps to set up and run the project locally.
+
 ### Prerequisites
 
-- Node.js and npm installed  
-- A modern browser that supports `getUserMedia` and WebGL  
-- A webcam connected and allowed in the browser  
+- Node.js (v18 or higher)
+- npm or yarn
 
 ### Installation
 
-```bash
-npm install
-```
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/yourusername/visora.git
+    cd visora
+    ```
 
-### Run the Development Server
+2.  Install dependencies:
+    ```bash
+    npm install
+    # or
+    yarn install
+    ```
 
-```bash
-npm run dev
-```
+3.  Run the development server:
+    ```bash
+    npm run dev
+    # or
+    yarn dev
+    ```
 
-Then open http://localhost:3000 in your browser.
+4.  Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Usage
 
-- Allow camera access when the browser asks  
-- Wait for the model to load and the loading message to disappear  
-- Move into the camera frame so the app can detect a person  
-- Adjust the alert volume slider until the sound feels comfortable  
-
-## Available Scripts
-
-In the project directory, you can run:
-
-- `npm run dev` – starts the development server  
-- `npm run build` – builds the production bundle  
-- `npm run start` – runs the production server after a build  
-- `npm run lint` – runs ESLint on the project files  
+1.  Allow the browser to access your webcam when prompted.
+2.  Click the **"Start Detection"** button. This initializes the AI model and prepares the audio engine (required for mobile browsers).
+3.  Once the model loads, the webcam feed will appear.
+4.  If a person enters the frame, a red bounding box will appear around them, and an alert sound will play.
+5.  Other objects (if detected) will be shown with cyan bounding boxes.
 
 ## Project Structure
 
-- `app/` – Next.js App Router entry, global layout, and main page  
-- `components/` – React components, including the `ObjectDetection` webcam view  
-- `utils/` – helper modules such as prediction rendering and alert handling  
-- `public/` – static assets such as `alert.wav` and icons  
+- `app/`: Next.js App Router pages and layouts.
+- `components/`: Reusable React components (ObjectDetection, Navbar, Footer).
+- `utils/`: Helper functions for drawing predictions and managing audio context.
+- `public/`: Static assets like the alert sound file.
 
-## Notes
+## License
 
-- The alert volume slider only affects the detection alert sound  
-- Detection threshold and interval are configured in the `ObjectDetection` component and can be tuned in code if needed  
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
